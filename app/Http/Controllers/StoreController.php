@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Store\StoresCollection;
 use App\Store;
 use Illuminate\Http\Request;
 
@@ -9,16 +10,11 @@ class StoreController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return StoresCollection
      */
-    public function index($perPage = 10)
+    public function index()
     {
-        $stores = Store::paginate($perPage);
-
-//        if (! $stores->isEmpty()) {
-//            return response()->json()
-//        }
+        return new StoresCollection(Store::all());
     }
 
     /**
