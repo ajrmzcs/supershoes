@@ -11,8 +11,8 @@ class StoresTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Store::class, 10)->create()->each(function ($store) {
-            $store->articles()->saveMany(factory(App\Article::class, 100)->make(['store_id' => $store->id]));
+        factory(App\Store::class, 5)->create()->each(function ($store) {
+            $store->articles()->saveMany(factory(App\Article::class, 10)->make(['store_id' => $store->id]));
         });
     }
 }

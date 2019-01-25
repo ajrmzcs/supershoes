@@ -34,6 +34,6 @@ class Article extends Model
      */
     public function store()
     {
-        return $this->belongsTo('App\Comment');
+        return $this->belongsTo('App\Store');
     }
 }
