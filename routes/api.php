@@ -18,8 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth.basic.once'])->group(function () {
-   Route::apiResource('/stores', 'StoreController');
-   
-   Route::get('/articles/stores/{store}', 'ArticleController@getArticlesByStore');
-   Route::apiResource('/articles', 'ArticleController');
+    Route::apiResource('/stores', 'StoreController');
+    Route::get('/articles/stores/{store}', 'ArticleController@getArticlesByStore');
+    Route::apiResource('/articles', 'ArticleController');
 });

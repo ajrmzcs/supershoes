@@ -25,6 +25,7 @@ class CreateArticlesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('store_id')->references('id')->on('stores');
+            // Cascade wont work because we are using soft deletes
         });
     }
 

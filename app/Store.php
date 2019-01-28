@@ -33,4 +33,19 @@ class Store extends Model
     {
         return $this->hasMany('App\Article');
     }
+
+    /**
+     * Soft delete related articles
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($model) {
+
+            $model->load([ 'articles']);
+            $model->articles()->delete();
+        });
+    }
+
 }

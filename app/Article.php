@@ -26,7 +26,8 @@ class Article extends Model
         'description',
         'price',
         'total_in_shelf',
-        'total_in_vault'
+        'total_in_vault',
+        'store_id'
     ];
 
     /**
