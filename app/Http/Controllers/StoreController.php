@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRequest;
 use App\Http\Resources\Store\StoreResource;
 use App\Http\Resources\Store\StoresCollection;
 use App\Store;
@@ -19,28 +20,14 @@ class StoreController extends Controller
         return new StoresCollection(Store::all());
     }
 
+
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required | max:100',
-            'address' => 'required | max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         try {
             Store::create([
                'name' => $request->name,
@@ -81,29 +68,15 @@ class StoreController extends Controller
         }
     }
 
+
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Store  $store
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @param Store $store
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Store $store)
+    public function update(StoreRequest $request, Store $store)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required | max:100',
-            'address' => 'required | max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         try {
             $store->name = $request->name;
             $store->address = $request->address;
@@ -125,7 +98,6 @@ class StoreController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      * @param  \App\Store  $store
      * @return \Illuminate\Http\Response
      */

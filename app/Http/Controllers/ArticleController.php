@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Article\ArticlesCollection;
 use App\Store;
@@ -24,7 +25,7 @@ class ArticleController extends Controller
     {
 
         $validator = Validator::make(['store' => $store], [
-            'store' => 'required|integer',
+            'store' => 'required | integer | exists:stores,id',
         ]);
 
         if ($validator->fails()) {
@@ -32,6 +33,7 @@ class ArticleController extends Controller
                 'error_msg' => 'Bad Request',
                 'error_code' => 400,
                 'success' => false,
+                'errors' => $validator->errors()
             ], 400);
         }
 
@@ -54,43 +56,11 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'description' => 'required',
-            'name' => 'required | max:100',
-            'price' => 'required | numeric',
-            'total_in_shelf' => 'required | integer',
-            'total_in_vault' => 'required | integer',
-            'store_name' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         // Find store id from store name, because
         // Article's api response does not include store_id.
         $store = Store::where('name', $request->store_name)->first();
-
-        // Additional store id validation
-        if (empty($store)) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => [
-                    'store_name' => [
-                        ['Invalid store name.']
-                    ]
-                ]
-            ], 400);
-        }
 
         try {
             Article::create([
@@ -144,43 +114,11 @@ class ArticleController extends Controller
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
-        $validator = Validator::make($request->all(), [
-            'description' => 'required',
-            'name' => 'required | max:100',
-            'price' => 'required | numeric',
-            'total_in_shelf' => 'required | integer',
-            'total_in_vault' => 'required | integer',
-            'store_name' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         // Find store id from store name, because
         // Article's api response does not include store_id.
         $store = Store::where('name', $request->store_name)->first();
-
-        // Additional store id validation
-        if (empty($store)) {
-            return response()->json([
-                'error_msg' => 'Bad Request',
-                'error_code' => 400,
-                'success' => false,
-                'errors' => [
-                    'store_name' => [
-                        ['Invalid store name.']
-                    ]
-                ]
-            ], 400);
-        }
 
         try {
 
