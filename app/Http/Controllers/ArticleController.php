@@ -21,6 +21,11 @@ class ArticleController extends Controller
         return new ArticlesCollection(Article::with('store')->get());
     }
 
+    /**
+     * Display a list of articles by store id
+     * @param int $store
+     * @return ArticlesCollection|\Illuminate\Http\JsonResponse
+     */
     public function getArticlesByStore($store)
     {
 
@@ -50,11 +55,11 @@ class ArticleController extends Controller
         }
     }
 
+
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(ArticleRequest $request)
     {
@@ -107,12 +112,12 @@ class ArticleController extends Controller
         }
     }
 
+
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(ArticleRequest $request, Article $article)
     {
